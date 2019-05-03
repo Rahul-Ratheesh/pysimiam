@@ -1,12 +1,12 @@
-from PyQt4 import QtGui
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt, QSignalMapper, QSettings
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt, QSignalMapper, QSettings
 from helpers import Struct
 from collections import OrderedDict
 from traceback import format_exception
 import sys
 from coursera import CourseraException
 
-class CourseraDock(QtGui.QDockWidget):
+class CourseraDock(QtWidgets.QDockWidget):
     
     closed = pyqtSignal(bool)
     
@@ -27,22 +27,22 @@ class CourseraDock(QtGui.QDockWidget):
         """Construct a new dockwindow following the tester """
         self.tester = tester
         
-        QtGui.QDockWidget.__init__(self, tester.testname, parent)
+        QtWidgets.QDockWidget.__init__(self, tester.testname, parent)
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         
         if not self.widget():
-            self.setWidget(QtGui.QWidget(self))
+            self.setWidget(QtWidgets.QWidget(self))
         
-        vl = QtGui.QVBoxLayout(self.widget())
+        vl = QtWidgets.QVBoxLayout(self.widget())
         #self.widget().setLayout(vl)
         
-        panel = QtGui.QFrame(self)
+        panel = QtWidgets.QFrame(self)
         vl.addWidget(panel)
         
-        self.login = QtGui.QLineEdit(self)
+        self.login = QtWidgets.QLineEdit(self)
         self.login.textEdited.connect(self.check_logpass)
-        self.password = QtGui.QLineEdit(self)
-        self.password.setEchoMode(QtGui.QLineEdit.Password)
+        self.password = QtWidgets.QLineEdit(self)
+        self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.password.textEdited.connect(self.check_logpass)
         
         self.cache = QSettings('pySimiam','coursera')
@@ -55,23 +55,23 @@ class CourseraDock(QtGui.QDockWidget):
         
         self.tests = []
         
-        fl = QtGui.QFormLayout(panel)
+        fl = QtWidgets.QFormLayout(panel)
         fl.addRow('&Login:',self.login)
         fl.addRow('&Password:',self.password)
         panel.setLayout(fl)
         
-        panel = QtGui.QFrame(self)
-        panel.setFrameShadow(QtGui.QFrame.Sunken)
-        panel.setFrameShape(QtGui.QFrame.Panel)
+        panel = QtWidgets.QFrame(self)
+        panel.setFrameShadow(QtWidgets.QFrame.Sunken)
+        panel.setFrameShape(QtWidgets.QFrame.Panel)
         vl.addWidget(panel)
         
-        vl2 = QtGui.QVBoxLayout(panel)
+        vl2 = QtWidgets.QVBoxLayout(panel)
         
         signalmapper = QSignalMapper(self)
         signalmapper.mapped[int].connect(self.test)
         
         for i,test in enumerate(self.tester.tests):
-            btn = QtGui.QPushButton("Test {}: {}".format(i+1,test.name),panel)
+            btn = QtWidgets.QPushButton("Test {}: {}".format(i+1,test.name),panel)
             btn.setStyleSheet(self.btn_default_stylesheet)
             btn.setEnabled(False)
             vl2.addWidget(btn)
@@ -81,11 +81,11 @@ class CourseraDock(QtGui.QDockWidget):
         
         panel.setLayout(vl2)
         
-        self.text = QtGui.QLabel("Enter your Coursera login and assignments password and push one of the test buttons above to run the test and submit the results to Coursera.")
+        self.text = QtWidgets.QLabel("Enter your Coursera login and assignments password and push one of the test buttons above to run the test and submit the results to Coursera.")
         self.text.setWordWrap(True)
         vl.addWidget(self.text)
-        self.text.setFrameShadow(QtGui.QFrame.Sunken)
-        self.text.setFrameShape(QtGui.QFrame.Panel)
+        self.text.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.text.setFrameShape(QtWidgets.QFrame.Panel)
         self.text.setMargin(5)
 
         #vl.setStretch(2,1)

@@ -1,5 +1,5 @@
-from PyQt4 import QtGui
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt, QObject, QEvent
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt, QObject, QEvent
 from helpers import Struct
 from xmlreader import XMLReader
 from xmlwriter import XMLWriter
@@ -32,7 +32,7 @@ class FloatEntry():
     
     def create_widgets(self,parent,layout):
         """Create a label and a spinbox in layout"""
-        self.control = QtGui.QDoubleSpinBox(parent)
+        self.control = QtWidgets.QDoubleSpinBox(parent)
         self.control.setMinimum(self.min_value)
         self.control.setMaximum(self.max_value)
         self.control.setSingleStep(self.step)
@@ -57,7 +57,7 @@ class IntEntry():
     
     def create_widgets(self, parent, layout):
         """Create a label and a spinbox in layout"""
-        self.control = QtGui.QSpinBox(parent)
+        self.control = QtWidgets.QSpinBox(parent)
         self.control.setMinimum(self.min_value)
         self.control.setMaximum(self.max_value)
         self.control.setValue(self.value)
@@ -79,7 +79,7 @@ class BoolEntry():
     
     def create_widgets(self,parent,layout):
         """Create a label and a spinbox in layout"""
-        self.control = QtGui.QCheckBox(parent)
+        self.control = QtWidgets.QCheckBox(parent)
         self.control.setChecked(self.value)
         layout.addRow(self.label,self.control)
     
@@ -101,15 +101,15 @@ class ChoiceEntry():
     
     def create_widgets(self,parent,layout):
         """Create a label and a spinbox in layout"""
-        self.control = QtGui.QFrame(parent)
-        self.control.setFrameStyle(QtGui.QFrame.StyledPanel | QtGui.QFrame.Sunken)
-        vlayout = QtGui.QVBoxLayout(self.control)
+        self.control = QtWidgets.QFrame(parent)
+        self.control.setFrameStyle(QtWidgets.QFrame.StyledPanel | QtWidgets.QFrame.Sunken)
+        vlayout = QtWidgets.QVBoxLayout(self.control)
         vlayout.setContentsMargins(5,5,5,5)
         vlayout.setSpacing(5)
         self.control.setLayout(vlayout)
         
         for opt in self.options:
-            w = QtGui.QRadioButton(opt, self.control)
+            w = QtWidgets.QRadioButton(opt, self.control)
             vlayout.addWidget(w)
             self.radios.append(w)
             if opt == self.value:
@@ -176,9 +176,9 @@ class Group():
                 self.leafs[dict_key] = Group(child_label,value)
         
     def create_widgets(self, parent, layout):
-        self.box = QtGui.QGroupBox(self.label,parent)
-        form_layout = QtGui.QFormLayout(self.box)
-        form_layout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
+        self.box = QtWidgets.QGroupBox(self.label,parent)
+        form_layout = QtWidgets.QFormLayout(self.box)
+        form_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.AllNonFixedFieldsGrow)
         for leaf in self.leafs.values():
             leaf.create_widgets(self.box,form_layout)
         layout.addRow(self.box)
@@ -209,7 +209,7 @@ class Contents(Group):
         Group.__init__(self,'',parameters)
     
     def create_widgets(self, parent, layout):
-        form_layout = QtGui.QFormLayout()
+        form_layout = QtWidgets.QFormLayout()
         for leaf in self.leafs.values():
             leaf.create_widgets(parent,form_layout)
         layout.addLayout(form_layout)
@@ -220,7 +220,7 @@ class Contents(Group):
     def use_xmlstruct(self, params):
         self.set_value(params)
         
-class ParamWidget(QtGui.QWidget):
+class ParamWidget(QtWidgets.QWidget):
     apply_request = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
     
     def __init__(self, parent, window_id, parameters):
@@ -228,9 +228,9 @@ class ParamWidget(QtGui.QWidget):
         """
         self.id_ = window_id
         
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
 
-        verticalLayout = QtGui.QVBoxLayout(self)
+        verticalLayout = QtWidgets.QVBoxLayout(self)
         verticalLayout.setContentsMargins(10,10,10,10)
         verticalLayout.setSpacing(10)
         
@@ -239,16 +239,16 @@ class ParamWidget(QtGui.QWidget):
         self.contents.create_widgets(self,verticalLayout)
         
         # Three buttons
-        horizontalLayout = QtGui.QHBoxLayout()
+        horizontalLayout = QtWidgets.QHBoxLayout()
 
-        self.apply_button = QtGui.QPushButton("Apply",self)
+        self.apply_button = QtWidgets.QPushButton("Apply",self)
         self.apply_button.clicked.connect(self.apply_click)
         horizontalLayout.addWidget(self.apply_button)
-        self.save_button = QtGui.QPushButton("Save",self)
+        self.save_button = QtWidgets.QPushButton("Save",self)
         #self.save_button.setEnabled(False)
         self.save_button.clicked.connect(self.save_click)
         horizontalLayout.addWidget(self.save_button)
-        self.load_button = QtGui.QPushButton("Load",self)
+        self.load_button = QtWidgets.QPushButton("Load",self)
         #self.load_button.setEnabled(False)
         self.load_button.clicked.connect(self.load_click)
         horizontalLayout.addWidget(self.load_button)
@@ -257,7 +257,7 @@ class ParamWidget(QtGui.QWidget):
         
         #verticalLayout.addStretch()
         
-        self.setSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Maximum)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Preferred,QtWidgets.QSizePolicy.Maximum)
         
         
     def set_parameters(self,parameters):
@@ -273,7 +273,7 @@ class ParamWidget(QtGui.QWidget):
     
     @pyqtSlot()
     def save_click(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self,
+        filename = QtWidgets.QFileDialog.getSaveFileName(self,
                         "Select a file for parameters",
                         "supervisors",
                         "XML files (*.xml)")
@@ -282,12 +282,12 @@ class ParamWidget(QtGui.QWidget):
             try:
                 writer.write()
             except Exception as e:
-                #QtGui.QMessageBox.critical(self,"Saving parameters failed",str(e))
-                QtGui.QMessageBox.critical(self,"Saving parameters failed","\n".join(format_exception(*sys.exc_info())))
+                #QtWidgets.QMessageBox.critical(self,"Saving parameters failed",str(e))
+                QtWidgets.QMessageBox.critical(self,"Saving parameters failed","\n".join(format_exception(*sys.exc_info())))
     
     @pyqtSlot()
     def load_click(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self,
+        filename = QtWidgets.QFileDialog.getOpenFileName(self,
                         "Select a file with parameters",
                         "supervisors",
                         "XML files (*.xml)")
@@ -298,21 +298,21 @@ class ParamWidget(QtGui.QWidget):
                 self.contents.use_xmlstruct(reader.read())
             except Exception as e:
 
-                #QtGui.QMessageBox.critical(self,"Loading parameters failed",str(e))
-                QtGui.QMessageBox.critical(self,"Loading parameters failed","\n".join(format_exception(*sys.exc_info())))
+                #QtWidgets.QMessageBox.critical(self,"Loading parameters failed",str(e))
+                QtWidgets.QMessageBox.critical(self,"Loading parameters failed","\n".join(format_exception(*sys.exc_info())))
                 self.contents.use_xmlstruct(cache)
 
-class ParamDock(QtGui.QDockWidget):
+class ParamDock(QtWidgets.QDockWidget):
     title_click = pyqtSignal()
     apply_request = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
 
     def __init__(self, parent, window_id, window_name, window_color, parameters):
         """Construct a new dockwindow following the parameters dict.
         """
-        QtGui.QDockWidget.__init__(self, window_name, parent)
+        QtWidgets.QDockWidget.__init__(self, window_name, parent)
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         
-        self.__panel = QtGui.QWidget(self)
+        self.__panel = QtWidgets.QWidget(self)
         self.__panel.hide()
         self.__panel.setFixedHeight(1)
 
@@ -353,7 +353,7 @@ class ParamDock(QtGui.QDockWidget):
             if self.__click:
                 self.title_click.emit()
                 self.__click = False
-        return QtGui.QDockWidget.event(self,event)
+        return QtWidgets.QDockWidget.event(self,event)
 
     def collapse(self, bool_collapse = True):
         self.expand(not bool_collapse)

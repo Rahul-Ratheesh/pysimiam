@@ -1,30 +1,30 @@
-from PyQt4 import QtGui
-from PyQt4.QtCore import Qt, pyqtSignal
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import Qt, pyqtSignal
 
-class LogDock(QtGui.QDockWidget):
+class LogDock(QtWidgets.QDockWidget):
     closed = pyqtSignal(bool)
     def __init__(self, parent):
         """Construct a new dockwindow with the log """
         
-        QtGui.QDockWidget.__init__(self, "Message log", parent)
+        QtWidgets.QDockWidget.__init__(self, "Message log", parent)
         self.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
 
-        self.table = QtGui.QTableWidget(0,2,self)
+        self.table = QtWidgets.QTableWidget(0,2,self)
         self.table.setHorizontalHeaderLabels(["Sender","Message"])
 
-        self.table.verticalHeader().setResizeMode(QtGui.QHeaderView.ResizeToContents)
+        self.table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
         hhdrs = self.table.horizontalHeader()       
-        hhdrs.setResizeMode(0,QtGui.QHeaderView.ResizeToContents)
-        hhdrs.setResizeMode(1,QtGui.QHeaderView.Stretch)
+        hhdrs.setSectionResizeMode (0,QtWidgets.QHeaderView.ResizeToContents)
+        hhdrs.setSectionResizeMode (1,QtWidgets.QHeaderView.Stretch)
 
         self.setWidget(self.table)
 
     def append(self,message,name,color):
         row = self.table.rowCount()
         self.table.insertRow(row)
-        self.table.setItem(row,0,QtGui.QTableWidgetItem(name))
-        self.table.setItem(row,1,QtGui.QTableWidgetItem(message))
-        clr = QtGui.QTableWidgetItem(" ")
+        self.table.setItem(row,0,QtWidgets.QTableWidgetItem(name))
+        self.table.setItem(row,1,QtWidgets.QTableWidgetItem(message))
+        clr = QtWidgets.QTableWidgetItem(" ")
         self.table.setVerticalHeaderItem(row,clr)
         if color is not None:
             clr.setBackground(QtGui.QColor(color))

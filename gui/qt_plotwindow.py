@@ -1,5 +1,5 @@
-from PyQt4 import QtGui
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt
+from PyQt5 import QtGui
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
 
 import sys
 import numpy

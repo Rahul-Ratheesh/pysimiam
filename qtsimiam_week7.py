@@ -6,13 +6,13 @@ from __future__ import print_function
 import sys
 sys.path.insert(0, './scripts')
 sys.path.insert(0, './gui')
-from PyQt4 import QtGui
+from PyQt5 import QtGui, QtWidgets
 
 from qt_mainwindow import SimulationWidget
 from coursera import Week7
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     simWidget = SimulationWidget()
     simWidget.superv_action.trigger()
     simWidget.show()

@@ -1,6 +1,6 @@
-from PyQt4 import QtGui
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, Qt, QObject, QEvent
-from PyQt4.Qwt5 import QwtPlot, QwtPlotCurve, QwtLegend, QwtData, QwtPlotMagnifier, QwtPlotPanner
+from PyQt5 import QtGui
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt, QObject, QEvent
+from PyQt5.Qwt5 import QwtPlot, QwtPlotCurve, QwtLegend, QwtData, QwtPlotMagnifier, QwtPlotPanner
 
 import numpy
 from random import random

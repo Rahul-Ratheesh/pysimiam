@@ -1,11 +1,11 @@
 from numpy import degrees
 from pose import Pose
 from renderer import Renderer
-from PyQt4.QtGui import QPainter,QColor,QPolygonF,QPen
-from PyQt4.QtCore import QPointF,QLineF,QRectF,Qt
+from PyQt5.QtGui import QPainter,QColor,QPolygonF,QPen
+from PyQt5.QtCore import QPointF,QLineF,QRectF,Qt
 
 class QtRenderer(Renderer):
-    """An implementation of :class:`~renderer.Renderer` for PyQt4.
+    """An implementation of :class:`~renderer.Renderer` for PyQt5.
        
        This renderer will draw on any `QPaintDevice`
     """

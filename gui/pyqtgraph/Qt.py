@@ -3,25 +3,25 @@ import sys, re
 
 ## Automatically determine whether to use PyQt or PySide. 
 ## This is done by first checking to see whether one of the libraries
-## is already imported. If not, then attempt to import PyQt4, then PySide.
-if 'PyQt4' not in sys.modules:
+## is already imported. If not, then attempt to import PyQt5, then PySide.
+if 'PyQt5' not in sys.modules:
     try:
-        import PyQt4
+        import PyQt5
     except ImportError:
-        raise Exception("PyQtGraph couldn't import PyQt4.")
+        raise Exception("PyQtGraph couldn't import PyQt5.")
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 try:
-    from PyQt4 import QtSvg
+    from PyQt5 import QtSvg
 except ImportError:
     pass
 try:
-    from PyQt4 import QtOpenGL
+    from PyQt5 import QtOpenGL
 except ImportError:
     pass
 
 QtCore.Signal = QtCore.pyqtSignal
-VERSION_INFO = 'PyQt4 ' + QtCore.PYQT_VERSION_STR + ' Qt ' + QtCore.QT_VERSION_STR
+VERSION_INFO = 'PyQt5 ' + QtCore.PYQT_VERSION_STR + ' Qt ' + QtCore.QT_VERSION_STR
 
 
 ## Make sure we have Qt >= 4.7
